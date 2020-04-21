@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+  float: left;
+  width: 30%;
+  height: 300px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+  background-color: #f1f1f1;
+  height: 300px; /* only for demonstration, should be removed */
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  nav, article {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h2> 회원가입 </h2>
+</header>
+
+<section>
+  <nav>
+    <ul>
+      <li><a id="a-first" href="#">Join</a></li>
+      <li><a id="a-second" href="../index.html">Login</a></li>
+      <li><a id="a-third" href="#">...</a></li>
+    </ul>
+  </nav>
+  
+  <article>
+    <form action="#">    
+     <label>NAME </label> <br>
+     <input id="name" type = "text"> <br>
+     <label>ID </label> <br>
+     <input id="userid" type="text"> <br>
+     <label>PASSWORD </label> <br>
+     <input id="passwd" type="text"> <br>
+     <label>SSN </label> <br>
+     <input id="ssn" type="text"> <br>
+     <label>ADDRESS </label> <br>
+     <input id="addr" type ="text"> <br> <br>
+     <input id="join-button" type="button" value="회원가입">
+     <input id="cancle-button" type="button" value="취소"> 
+    </form>
+  </article>
+</section>
+<footer>
+  <p>Footer</p>
+</footer>
+	<script type="text/javascript">
+	$('#a-first').click(function(){
+		
+	})
+	$('#a-second').click(function(){
+		
+	})
+	$('#a-third').click(function(){
+		
+	})
+	$('#join-button').click(function(){			
+		$.ajax({
+			url: '/member/join', //리소스에 접근(join)
+			type: 'post', //연결(맵핑)
+			data: JSON.stringify(
+					{name:$('#name').val(),
+					userid:$('#userid').val(),
+					passwd:$('#passwd').val(),
+					ssn:$('#ssn').val(),
+					addr:$('#addr').val()} ), //스트링으로 다 바꿔라
+			dataType: 'json',
+			contentType: 'application/json', //application은 java를 말함
+			success: function(message){
+				if(message === 'SUCCESS'){//string값 비교는 ===
+					location.href="../index.html" // BOM객체
+				}else{
+					location.href="join.html"
+				}
+				
+			},
+			error: function(){
+				alert('Networking Error') //window.alert()인데 윈도우 생략
+			}
+			
+		})
+		//컨트롤러로 보내기
+	})
+	$('#cancle-button').click(function(){
+		alert('취소')
+ 	})
+	</script>
+</body>
+</html>
