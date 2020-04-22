@@ -71,7 +71,7 @@ footer {
 </head>
 <body>
 <header>
-  <h2> 성적표 </h2>
+  <h2> 당첨 결과 </h2>
 </header>
 
 <section>
@@ -83,88 +83,79 @@ footer {
   </nav>
   
   <article>
-    <form action="#">
+    <form action="#">    
+     <input id="checknum-button" type="button" value="당첨번호확인">
+     <div id="lotto_num"></div>
      <label>ID </label> <br>
-     <input id="userid" type="text"> <br><br>
-     <input id="grade-button" type="button" value="학점확인"> <br><br>
-     <input id="total-button" type="button" value="총점확인"> <br><br>
-     <input id="avg-button" type="button" value="평균확인"> <br><br>
-     <input id="register-button" type="button" value="점수등록">
-    </form>
+     <input id="userid" type="text"> <br>  
+     <input id="mynum-button" type="button" value="내번호확인"> <br>    
+     <input id="result-button" type="button" value="등수확인">    
+    </form>   
+    <div id="my_num"></div>
     <div id="result"></div>
   </article>
 </section>
 <footer>
   <p>Footer</p>
 </footer>
-	<script>
-	$('#join_a')
-		.css('cursor','pointer')
+	<script>  
+		
+		$('#join_a')
+		.css('cusor','pointer')
 		.click(e=>{
 			e.preventDefault()
-			location.href="join.html"
-	})
-	$('#login_a')
+			location.href="../member/join.html"
+		})
+		$('#login_a')
 		.css('cursor','pointer')
 		.click(e=>{
 			e.preventDefault()
 			location.href="../index.html"
-	})
-	$('#grade-button').click(e=>{
-		e.preventDefault()
-		$('#result').html('')			
-		$.ajax({
-				url:'/grade/report/'+$('#userid').val(),
+		})
+		
+		$('#checknum-button').click(e=>{
+			e.preventDefault()
+			$.ajax({
+				url:'/lotto/number/',
 				type:'get',
-				//data:{}는 암호화된 데이터 보낼때 사용
+				contentType:'application/json',
+				success: d=>{
+					$('#lotto_num').html('<h3>당첨번호:'+d+'</h3>')
+				},
+				error: (req,x,err)=>{
+					alert(req.status+"\n"+req.reponseText+"\n"+err)
+				}
+			})
+		})
+		$('#mynum-button').click(e=>{
+			e.preventDefault()
+			$.ajax({
+				url:'/lotto/mynumber/'+$('#userid').val(),
+				type:'get',
+				contentType:'application/json',
+				success: d=>{
+					$('#my_num').html('<h3>내번호:'+d+'</h3>')
+				},
+				error: (req,x,err)=>{
+					alert(req.status+"\n"+req.reponseText+"\n"+err)
+				}
+			})
+		})
+		$('#result-button').click(e=>{
+			e.preventDefault()
+			$.ajax({
+				url:'/lotto/rank/'+$('#userid').val(),
+				type:'get',
 				dataType:'json',
 				contentType:'application/json',
 				success: d=>{
-					$('#result').html('<h3>학점:'+d+'</h3>')
+					$('#result').html('<h3>'+d+'</h3>')
 				},
 				error: (req,x,err)=>{
-					alert(req.status + "\n" + req.responseText + "\n" + err)
+					alert(req.status+"\n"+req.reponseText+"\n"+err)
 				}
-			})				
-	})
-	$('#total-button').click(e=>{
-		e.preventDefault()
-		$('#result').html('')
-		$.ajax({
-			url:'/grade/total/'+$('#userid').val(),
-			type:'get',
-			//data:{}는 암호화된 데이터 보낼때 사용
-			dataType:'json',
-			contentType:'application/json',
-			success: d=>{
-				$('#result').html('<h3>총점:'+d+'</h3>')
-			},
-			error: (req,x,err)=>{
-				alert(req.status + "\n" + req.responseText + "\n" + err)
-			}
+			})
 		})
-	})
-	$('#avg-button').click(e=>{
-		e.preventDefault()
-		$('#result').html('')
-		$.ajax({
-			url:'/grade/avg/'+$('#userid').val(),
-			type:'get',
-			dataType:'json',
-			contentType:'application/json',
-			success: d=>{
-				$('#result').html('<h3>평균:'+d+'</h3>')
-			},
-			error: (req,x,err)=>{
-				alert(req.status + "\n" + req.responseText + "\n" + err)
-			}
-		})
-	})
-	$('#register-button').click(e=>{
-		e.preventDefault()
-		location.href="register.html"
-	})
-		
 	</script>
 </body>
 </html>

@@ -5,7 +5,9 @@ import com.occamsrazor.web.util.Credit;
 public interface GradeService {
 	public void add(Grade grade);
 	public Grade[] list();
-	public Grade detail(String userid);
+	public Credit detail(String userid);
+	public int avg(String userid);
+	public int total(String userid);
 	public int count();
 	public int total(Grade grade);
 	public int avg(Grade grade);

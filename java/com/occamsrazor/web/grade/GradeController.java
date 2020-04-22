@@ -3,6 +3,7 @@ package com.occamsrazor.web.grade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,20 +22,18 @@ public class GradeController {
 		gradeService.add(grade);
 		return (gradeService.count() == (current+1))?Messenger.SUCCESS:Messenger.FAIL;
 	}
-	
-	@PostMapping("/record")
-	public Credit record(@RequestBody Grade grade) {	
-		return gradeService.record(grade);
+	@GetMapping("/report/{userid}")
+	public Credit report(@PathVariable String userid) {
+		return gradeService.detail(userid);
+	}
+	@GetMapping("/total/{userid}")
+	public int total(@PathVariable String userid) {	
+		return gradeService.total(userid);
 	}
 	
-	@PostMapping("/total")
-	public int total(@RequestBody Grade grade) {	
-		return gradeService.total(grade);
-	}
-	
-	@PostMapping("/avg")
-	public int avg(@RequestBody Grade grade) {	
-		return gradeService.avg(grade);
+	@GetMapping("/avg/{userid}")
+	public int avg(@PathVariable String userid) {	
+		return gradeService.avg(userid);
 	}
 	
 	@GetMapping("/list")
@@ -42,13 +41,6 @@ public class GradeController {
 		Grade[] result = new Grade[5];
 		result = gradeService.list();
 		return result;
-	}
-	
-	@GetMapping("/detail")
-	public Grade detail(@RequestBody String userid){
-		Grade grade = new Grade();
-		grade = gradeService.detail(userid);
-		return grade;
 	}
 	
 	@GetMapping("/count")

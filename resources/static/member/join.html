@@ -77,9 +77,8 @@ footer {
 <section>
   <nav>
     <ul>
-      <li><a id="a-first" href="#">Join</a></li>
-      <li><a id="a-second" href="../index.html">Login</a></li>
-      <li><a id="a-third" href="#">...</a></li>
+      <li><a id="join_a">Join</a></li>
+      <li><a id="login_a">Login</a></li>
     </ul>
   </nav>
   
@@ -103,17 +102,22 @@ footer {
 <footer>
   <p>Footer</p>
 </footer>
-	<script type="text/javascript">
-	$('#a-first').click(function(){
-		
+	<script>
+	$('#join_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="join.html"
 	})
-	$('#a-second').click(function(){
-		
+	$('#login_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="../index.html"
 	})
-	$('#a-third').click(function(){
-		
-	})
-	$('#join-button').click(function(){			
+	
+	$('#join-button').click(e=> {
+		e.preventDefault()
 		$.ajax({
 			url: '/member/join', //리소스에 접근(join)
 			type: 'post', //연결(맵핑)
@@ -125,22 +129,23 @@ footer {
 					addr:$('#addr').val()} ), //스트링으로 다 바꿔라
 			dataType: 'json',
 			contentType: 'application/json', //application은 java를 말함
-			success: function(message){
-				if(message === 'SUCCESS'){//string값 비교는 ===
+			success: d =>{
+				if(d === 'SUCCESS'){//string값 비교는 ===
 					location.href="../index.html" // BOM객체
 				}else{
 					location.href="join.html"
 				}
 				
 			},
-			error: function(){
-				alert('Networking Error') //window.alert()인데 윈도우 생략
+			error: (req,x,err)=>{
+				alert(req.status + "\n" + req.responseText + "\n" + err)
 			}
 			
 		})
 		//컨트롤러로 보내기
 	})
-	$('#cancle-button').click(function(){
+	$('#cancle-button').click(e=>{
+		e.preventDefault();
 		alert('취소')
  	})
 	</script>

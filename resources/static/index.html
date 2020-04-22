@@ -77,9 +77,8 @@ footer {
 <section>
   <nav>
     <ul>
-      <li><a id="a-first" href="member/join.html">Join</a></li>
-      <li><a id="a-second" href="#">Login</a></li>
-      <li><a id="a-third" href="#">...</a></li>
+      <li><a id="join_a">Join</a></li>
+      <li><a id="login_a">Login</a></li>
     </ul>
   </nav>
   
@@ -97,20 +96,22 @@ footer {
 <footer>
   <p>Footer</p>
 </footer>
-	<script type="text/javascript">
-	$('#a-first').click(function(){
-		
+	<script>
+	$('#join_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="member/join.html"
 	})
-	$('#a-second').click(function(){
-		
+	$('#login_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="index.html"
 	})
-	$('#a-third').click(function(){
-		$.ajax({
-			
-		})
+	$('#login-button').click(e=>{
+		e.preventDefault()
 		
-	})
-	$('#login-button').click(function(){
 		$.ajax({
 			url:'/member/login',
 			type: 'post', //예외로 보안이 필요한거는 post로함(get이 아니고)
@@ -119,21 +120,23 @@ footer {
 					passwd:$('#passwd').val()}),
 			contentType : 'application/json',
 			dataType:'json',
-			success: function(message){	
-				if(message === "SUCCESS"){
-					location.href = "grade/register.html"
+			success: d=>{	
+				if(d === "SUCCESS"){
+					location.href = "lotto/buy.html"
 				}else{
 					alert("다시 로그인 해주세요")
 					location.href = "index.html"
 				}
 				
 			},
-			error: function(){				
-				alert('Networking Error')				
+			error: (req,x,err)=>{
+				alert(req.status + "\n" + req.responseText + "\n" + err)
 			}
 		})
 	})
-	$('#cancle-button').click(function(){
+	$('#cancle-button').click(e=>{
+		e.preventDefault()
+		
 		$.ajax({
 			url:'/member/delete',
 			type:'delete',
@@ -142,11 +145,11 @@ footer {
 					passwd:$('#passwd').val()}),
 			dataType:'json',
 			contentType:'application/json',
-			success:function(){
+			success: d=>{
 				
 			},
-			error:function(){
-				alert('Networking Error')
+			error: (req,x,err)=>{
+				alert(req.status + "\n" + req.responseText + "\n" + err)
 			}		
 		})
 	})

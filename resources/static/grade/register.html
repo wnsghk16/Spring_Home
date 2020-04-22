@@ -77,9 +77,8 @@ footer {
 <section>
   <nav>
     <ul>
-      <li><a id="a-first" href="#">Join</a></li>
-      <li><a id="a-second" href="../index.html">Login</a></li>
-      <li><a id="a-third" href="#">...</a></li>
+      <li><a id="join_a">Join</a></li>
+      <li><a id="login_a">Login</a></li>
     </ul>
   </nav>
   
@@ -96,17 +95,31 @@ footer {
      <label>JAVA </label> <br>
      <input id="java" type ="text"> <br> <br>
      <input id="register-button" type="button" value="점수등록">
-     <input id="show-result" type="button" value="총점, 평균, 학점 보기"> 
+     <input id="show-result" type="button" value="총점, 평균, 학점 보기">    
     </form>
+    <div id="result"></div>
   </article>
 </section>
 <footer>
   <p>Footer</p>
 </footer>
-	<script type="text/javascript">
-	
-	  $('#register-button').click(function(){
-		  $.ajax({
+	<script>
+	$('#join_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="join.html"
+	})
+	$('#login_a')
+		.css('cursor','pointer')
+		.click(e=>{
+			e.preventDefault()
+			location.href="../index.html"
+	})
+	   $('#register-button').click(e=>{		  
+		   e.preventDefault();
+			$('#result').html('')	
+			 $.ajax({
 				url: '/grade/register',
 				type: 'post',
 				data: JSON.stringify(
@@ -117,24 +130,59 @@ footer {
 							  java:$('#java').val()} ),
 				dataType: 'json',
 				contentType: 'application/json',
-				success: function(message){
-					if(message === 'SUCCESS'){
+				success: d=>{
+					if(d === 'SUCCESS'){
 						alert('입력에 성공하셨습니다.')
-						location.href="register.html"
 					}else{
 						 alert('다시입력해주세요')
 						 location.href="register.html"
 					}
 					
 				},
-				error: function(){
-					alert('Networking Error')
+				error: (req,x,err)=>{
+					alert(req.status + "\n" + req.responseText + "\n" + err)
 				}  
 		  })
+			/*
+			$.ajax({
+				url: '/grade/register',
+				type: 'post',
+				data: JSON.stringify(
+						{userid:$('#userid').val(),
+							  korean:$('#korean').val(),
+							  math:$('#math').val(),
+							  english:$('#english').val(),
+							  java:$('#java').val()} ),
+				dataType: 'json',
+				contentType: 'application/json',
+				success: d=>{					
+					alert(d)
+				},
+				error: (req,x,err)=>{
+					alert(req.status + "\n" + req.responseText + "\n" + err)
+				}  
+		  })
+			*/
 	  })
-	  $('#show-result').click(function(){
-		  location.href="report.html"
-	  })
+	  $('#show-result').click(e=>{
+			e.preventDefault()		
+			/*
+			$.ajax({
+				url:'/grade/report/'+$('#userid').val(),
+				type:'get',
+				//data:{}는 암호화된 데이터 보낼때 사용
+				dataType:'json',
+				contentType:'application/json',
+				success: d=>{
+					$('#result').html('<h3>학점:'+d+'</h3>')
+				},
+				error: (req,x,err)=>{
+					alert(req.status + "\n" + req.responseText + "\n" + err)
+				}
+			})
+			*/
+			location.href="report.html"
+	  })	  
 	  </script>
 </body>
 </html>
